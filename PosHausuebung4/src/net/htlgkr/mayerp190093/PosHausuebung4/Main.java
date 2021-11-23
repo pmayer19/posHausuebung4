@@ -66,11 +66,11 @@ public class Main {
 
         int index = 0;
 
-        while (numbers.size() > index) {
+        while (index < numbers.size()) {
             Task task = new Task(numbers.subList(index, Math.min((int) (index + parts), numbers.size())), divider);
             executor.execute(task);
             if (index + parts > numbers.size()) {
-                index += numbers.size() - index;
+                index = numbers.size();
             } else {
                 index += parts;
             }

@@ -63,10 +63,9 @@ public class Main {
         int sum = 0;
         int index2 = 0;
         while (numbers2.size() > index2) {
-            //TaskSummenformel tasksu = new TaskSummenformel(numbers2.subList(index2, Math.min((int) (index2 + parts2), numbers2.size())),parts2);
             Callable<Integer> c = new TaskSummenformel(numbers2.subList(index2, Math.min((int) (index2 + parts2), numbers2.size())),parts2);
             if (index2 + parts2 > numbers2.size()) {
-                index2 += numbers2.size() - index2;
+                index2 = numbers2.size();
             } else {
                 index2 += parts2;
             }
