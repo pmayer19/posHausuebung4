@@ -5,6 +5,7 @@
  */
 package net.htlgkr.mayerp190093.PosHausuebung4;
 
+import net.htlgkr.mayerp190093.PosHausuebung4Ü2.TaskSummenformel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +15,11 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +31,7 @@ import java.util.stream.Collectors;
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         List<Integer> numbers = new ArrayList<>();
         String filename = "numbers.csv";
         File file = new File(filename);
@@ -52,42 +57,22 @@ public class Main {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(java.lang.Runtime.getRuntime().availableProcessors());
 
         Scanner sc = new Scanner(System.in);
-//        System.out.print("Teiler>");
-//        int chunks = sc.nextInt();
-//        System.out.print("Chunks>");
-//        int divider = sc.nextInt();
-//
-//        int parts = numbers.size() / chunks;
-//
-//        int index = 0;
-//
-//        while (numbers.size() > index) {
-//            Task task = new Task(numbers.subList(index, Math.min((int) (index + parts), numbers.size())), divider);
-//            executor.execute(task);
-//            if (index + parts > numbers.size()) {
-//                index += numbers.size() - index;
-//            } else {
-//                index += parts;
-//            }
-//        }
-//
+        System.out.print("Chunks>");
+        int chunks = sc.nextInt();
+        System.out.print("Divider>");
+        int divider = sc.nextInt();
+        
+        int parts = numbers.size() / chunks;
 
-        System.out.print("n>");
-        int n = sc.nextInt();
-        List<Integer> numbers2 = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            numbers2.add(i);
-        }
-        int parts2 = numbers2.size() / 3;
+        int index = 0;
 
-        int index2 = 0;
-        while (numbers2.size() > index2) {
-            TaskSummenformel tasksu = new TaskSummenformel(numbers2.subList(index2, Math.min((int) (index2 + parts2), numbers2.size())));
-            executor.execute(tasksu);
-            if (index2 + parts2 > numbers2.size()) {
-                index2 += numbers2.size() - index2;
+        while (numbers.size() > index) {
+            Task task = new Task(numbers.subList(index, Math.min((int) (index + parts), numbers.size())), divider);
+            executor.execute(task);
+            if (index + parts > numbers.size()) {
+                index += numbers.size() - index;
             } else {
-                index2 += parts2;
+                index += parts;
             }
         }
         executor.shutdown();
